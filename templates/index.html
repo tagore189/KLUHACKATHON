@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="VisionClaim - AI-powered motor vehicle damage assessment and instant repair cost estimation. Upload a photo and get a pre-approval estimate in seconds.">
+    <title>VisionClaim | Instant Claims, Powered by Vision</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <svg class="logo-icon" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="14" cy="14" r="12" stroke="#3b82f6" stroke-width="2.5"/>
+                    <circle cx="14" cy="14" r="5" fill="#3b82f6"/>
+                    <path d="M14 2 L14 6 M14 22 L14 26 M2 14 L6 14 M22 14 L26 14" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span>VisionClaim</span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="#how-it-works" class="nav-link">How it Works</a>
+                <a href="#technology" class="nav-link">Technology</a>
+                <a href="#features" class="nav-link">Enterprise</a>
+                <a href="#pricing" class="nav-link">Pricing</a>
+            </div>
+            <div class="nav-actions">
+                <a href="/estimate" class="nav-link nav-login">Log in</a>
+                <a href="/estimate" class="btn btn-primary btn-sm" id="getStartedNav">Get Started</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    NEXT-GEN 3D ESTIMATION
+                </div>
+                <h1 class="hero-title">
+                    Instant Claims,<br>
+                    <span class="gradient-text">Powered by</span><br>
+                    <span class="gradient-text">Vision.</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Upload a photo of your vehicle damage and get an AI-powered repair estimate in seconds. Skip the wait, get paid faster.
+                </p>
+                <div class="hero-ctas">
+                    <a href="/estimate" class="btn btn-primary" id="startEstimateHero">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1m0 12.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11"/><path d="M6.5 5v6l5-3z"/></svg>
+                        Start My Estimate
+                    </a>
+                    <a href="#how-it-works" class="btn btn-outline" id="watchDemoBtn">
+                        Watch Demo
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 5v6l4-3z"/></svg>
+                    </a>
+                </div>
+                <div class="hero-social-proof">
+                    <div class="avatar-stack">
+                        <div class="avatar" style="background: linear-gradient(135deg, #3b82f6, #8b5cf6);">J</div>
+                        <div class="avatar" style="background: linear-gradient(135deg, #10b981, #3b82f6);">M</div>
+                        <div class="avatar" style="background: linear-gradient(135deg, #f59e0b, #ef4444);">S</div>
+                    </div>
+                    <span class="social-proof-text">Joined by <strong>10k+</strong> drivers this month</span>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-card">
+                    <div class="card-image-area">
+                        <div class="car-visual">
+                            <svg viewBox="0 0 400 250" class="car-svg" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="carGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#e2e8f0;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#94a3b8;stop-opacity:1" />
+                                    </linearGradient>
+                                    <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.3" />
+                                        <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0" />
+                                    </linearGradient>
+                                </defs>
+                                <!-- Car body -->
+                                <ellipse cx="200" cy="200" rx="180" ry="15" fill="rgba(59,130,246,0.1)"/>
+                                <path d="M50,160 Q60,100 120,90 L180,80 Q220,75 260,90 L320,110 Q370,130 380,160 L380,170 Q380,185 360,185 L60,185 Q40,185 40,170 Z" fill="url(#carGrad)" stroke="#64748b" stroke-width="1"/>
+                                <!-- Windows -->
+                                <path d="M130,92 L175,82 Q210,78 240,85 L275,95 Q255,80 200,78 Q165,78 130,92Z" fill="#1e293b" opacity="0.8"/>
+                                <!-- Headlights -->
+                                <ellipse cx="365" cy="155" rx="12" ry="8" fill="#fbbf24" opacity="0.8"/>
+                                <ellipse cx="55" cy="165" rx="10" ry="7" fill="#ef4444" opacity="0.6"/>
+                                <!-- Wheels -->
+                                <circle cx="120" cy="185" r="22" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+                                <circle cx="120" cy="185" r="12" fill="#334155"/>
+                                <circle cx="120" cy="185" r="4" fill="#64748b"/>
+                                <circle cx="310" cy="185" r="22" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+                                <circle cx="310" cy="185" r="12" fill="#334155"/>
+                                <circle cx="310" cy="185" r="4" fill="#64748b"/>
+                                <!-- Damage indicators -->
+                                <circle cx="340" cy="140" r="18" fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="3,3" class="pulse-ring"/>
+                                <circle cx="340" cy="140" r="4" fill="#3b82f6"/>
+                                <circle cx="100" cy="140" r="15" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3,3" class="pulse-ring delay-1"/>
+                                <circle cx="100" cy="140" r="4" fill="#f59e0b"/>
+                            </svg>
+                        </div>
+                        <div class="scan-line"></div>
+                    </div>
+                    <div class="card-overlay">
+                        <div class="overlay-tag">
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="#3b82f6"><circle cx="6" cy="6" r="5"/></svg>
+                            Rear Quarter Panel
+                        </div>
+                        <div class="overlay-estimate">
+                            <span class="estimate-label">EST. REPAIR</span>
+                            <span class="estimate-value">$1,400.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="technology">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>The Future of Insurance Claims</h2>
+                <p>Cutting-edge AI technology to handle your motor claims with unprecedented speed and accuracy.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5">
+                            <path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/>
+                            <path d="M3 16V8a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5Z"/>
+                            <path d="m7.5 4.2-.7-.7M16.5 4.2l.7-.7M7.5 19.8l-.7.7M16.5 19.8l.7.7"/>
+                        </svg>
+                    </div>
+                    <h3>AI-Driven Assessment</h3>
+                    <p>Sophisticated computer vision identifies every scratch and dent automatically, using millions of training datasets.</p>
+                </div>
+                <div class="feature-card reveal delay-1">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+                            <path d="m9 12 2 2 4-4"/>
+                        </svg>
+                    </div>
+                    <h3>Fraud Detection</h3>
+                    <p>Advanced algorithms verify claim integrity in real-time by analyzing metadata and image consistency.</p>
+                </div>
+                <div class="feature-card reveal delay-2">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5">
+                            <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/>
+                        </svg>
+                    </div>
+                    <h3>Instant Payouts</h3>
+                    <p>Receive your approved repair estimate funds directly to your digital wallet or bank account in under 60 seconds.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="experience" id="how-it-works">
+        <div class="container">
+            <div class="experience-header reveal">
+                <div>
+                    <h2>Experience the Speed</h2>
+                    <p>See how our engine processes real-world damages</p>
+                </div>
+                <a href="/estimate" class="link-arrow">View gallery <span>&rarr;</span></a>
+            </div>
+            <div class="experience-grid">
+                <div class="experience-card reveal">
+                    <div class="exp-visual detection-visual">
+                        <div class="grid-overlay"></div>
+                        <svg viewBox="0 0 400 220" class="wireframe-car" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <filter id="glow">
+                                    <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                    <feMerge>
+                                        <feMergeNode in="coloredBlur"/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+                            <!-- Wireframe car outline -->
+                            <path d="M50,160 Q60,100 120,90 L180,80 Q220,75 260,90 L320,110 Q370,130 380,160 L380,170 Q380,185 360,185 L60,185 Q40,185 40,170 Z" 
+                                fill="none" stroke="#22c55e" stroke-width="1" filter="url(#glow)" opacity="0.8"/>
+                            <path d="M130,92 L175,82 Q210,78 240,85 L275,95" fill="none" stroke="#22c55e" stroke-width="1" filter="url(#glow)" opacity="0.6"/>
+                            <!-- Detection points -->
+                            <circle cx="340" cy="145" r="12" fill="none" stroke="#22c55e" stroke-width="1" class="pulse-ring"/>
+                            <circle cx="340" cy="145" r="3" fill="#22c55e" filter="url(#glow)"/>
+                            <circle cx="90" cy="150" r="10" fill="none" stroke="#22c55e" stroke-width="1" class="pulse-ring delay-1"/>
+                            <circle cx="90" cy="150" r="3" fill="#22c55e" filter="url(#glow)"/>
+                            <circle cx="200" cy="85" r="8" fill="none" stroke="#f59e0b" stroke-width="1" class="pulse-ring delay-2"/>
+                            <circle cx="200" cy="85" r="3" fill="#f59e0b" filter="url(#glow)"/>
+                            <!-- Scan lines -->
+                            <line x1="0" y1="120" x2="400" y2="120" stroke="#22c55e" stroke-width="0.5" opacity="0.3" class="scan-h"/>
+                            <line x1="200" y1="0" x2="200" y2="220" stroke="#22c55e" stroke-width="0.5" opacity="0.3"/>
+                        </svg>
+                        <div class="exp-badge">VisionClaim</div>
+                    </div>
+                    <div class="exp-info">
+                        <span class="stage-label">STAGE 01</span>
+                        <h3>Damage Detection</h3>
+                        <p>Pixel-perfect identification of surface defects.</p>
+                    </div>
+                </div>
+                <div class="experience-card reveal delay-1">
+                    <div class="exp-visual estimation-visual">
+                        <div class="dashboard-mock">
+                            <div class="dash-row">
+                                <div class="dash-chart">
+                                    <div class="chart-bar" style="--h:70%"><span>Parts</span></div>
+                                    <div class="chart-bar" style="--h:45%"><span>Labor</span></div>
+                                    <div class="chart-bar" style="--h:30%"><span>Paint</span></div>
+                                    <div class="chart-bar" style="--h:85%"><span>Total</span></div>
+                                </div>
+                                <div class="dash-stats">
+                                    <div class="stat-item">
+                                        <span class="stat-val">$1,420</span>
+                                        <span class="stat-lbl">Estimated</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-val">4</span>
+                                        <span class="stat-lbl">Parts</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-val">3 days</span>
+                                        <span class="stat-lbl">Repair</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dash-progress">
+                                <div class="progress-bar"><div class="progress-fill" style="--w:92%"></div></div>
+                                <span>92% Confidence</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="exp-info">
+                        <span class="stage-label">STAGE 02</span>
+                        <h3>Repair Estimation</h3>
+                        <p>Localized labor rates and parts cost intelligence.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="pricing">
+        <div class="container">
+            <div class="cta-card reveal">
+                <h2>Ready to process your claim in<br>under five minutes?</h2>
+                <p>Join the thousand of users who have simplified their insurance experience.<br>VisionClaim is available for individual drivers and fleet operators.</p>
+                <div class="cta-buttons">
+                    <a href="/estimate" class="btn btn-white" id="startEstimateCta">Start Estimate Now</a>
+                    <a href="#" class="btn btn-dark" id="talkSalesBtn">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="7" cy="7" r="6" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M5 5.5 Q5 4 7 4 Q9 4 9 5.5 Q9 7 7 7 L7 8" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="7" cy="10" r="0.8"/></svg>
+                        Talk to Sales
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <a href="/" class="nav-logo">
+                        <svg class="logo-icon" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="14" cy="14" r="12" stroke="#3b82f6" stroke-width="2.5"/>
+                            <circle cx="14" cy="14" r="5" fill="#3b82f6"/>
+                            <path d="M14 2 L14 6 M14 22 L14 26 M2 14 L6 14 M22 14 L26 14" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <span>VisionClaim</span>
+                    </a>
+                </div>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Security</a>
+                </div>
+                <div class="footer-social">
+                    <a href="#" aria-label="GitHub">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z"/></svg>
+                    </a>
+                    <a href="#" aria-label="Twitter">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 VisionClaim AI Technologies. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

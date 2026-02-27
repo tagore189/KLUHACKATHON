@@ -1,0 +1,240 @@
+{
+    "parts": {
+        "front_bumper": {
+            "name": "Front Bumper",
+            "repair_cost": {
+                "min": 150,
+                "max": 600
+            },
+            "replacement_cost": {
+                "min": 500,
+                "max": 1500
+            },
+            "labor_hours": {
+                "repair": 2,
+                "replacement": 3
+            }
+        },
+        "rear_bumper": {
+            "name": "Rear Bumper",
+            "repair_cost": {
+                "min": 150,
+                "max": 600
+            },
+            "replacement_cost": {
+                "min": 500,
+                "max": 1400
+            },
+            "labor_hours": {
+                "repair": 2,
+                "replacement": 3
+            }
+        },
+        "hood": {
+            "name": "Hood",
+            "repair_cost": {
+                "min": 200,
+                "max": 800
+            },
+            "replacement_cost": {
+                "min": 700,
+                "max": 2500
+            },
+            "labor_hours": {
+                "repair": 3,
+                "replacement": 4
+            }
+        },
+        "trunk": {
+            "name": "Trunk/Tailgate",
+            "repair_cost": {
+                "min": 200,
+                "max": 700
+            },
+            "replacement_cost": {
+                "min": 600,
+                "max": 2000
+            },
+            "labor_hours": {
+                "repair": 2.5,
+                "replacement": 3.5
+            }
+        },
+        "front_fender": {
+            "name": "Front Fender",
+            "repair_cost": {
+                "min": 200,
+                "max": 700
+            },
+            "replacement_cost": {
+                "min": 500,
+                "max": 1800
+            },
+            "labor_hours": {
+                "repair": 2.5,
+                "replacement": 4
+            }
+        },
+        "rear_fender": {
+            "name": "Rear Quarter Panel",
+            "repair_cost": {
+                "min": 300,
+                "max": 1000
+            },
+            "replacement_cost": {
+                "min": 800,
+                "max": 3000
+            },
+            "labor_hours": {
+                "repair": 4,
+                "replacement": 8
+            }
+        },
+        "door": {
+            "name": "Door Panel",
+            "repair_cost": {
+                "min": 200,
+                "max": 800
+            },
+            "replacement_cost": {
+                "min": 600,
+                "max": 2500
+            },
+            "labor_hours": {
+                "repair": 3,
+                "replacement": 5
+            }
+        },
+        "headlight": {
+            "name": "Headlight Assembly",
+            "repair_cost": {
+                "min": 50,
+                "max": 200
+            },
+            "replacement_cost": {
+                "min": 200,
+                "max": 1500
+            },
+            "labor_hours": {
+                "repair": 0.5,
+                "replacement": 1
+            }
+        },
+        "taillight": {
+            "name": "Taillight Assembly",
+            "repair_cost": {
+                "min": 50,
+                "max": 150
+            },
+            "replacement_cost": {
+                "min": 150,
+                "max": 1000
+            },
+            "labor_hours": {
+                "repair": 0.5,
+                "replacement": 1
+            }
+        },
+        "windshield": {
+            "name": "Windshield",
+            "repair_cost": {
+                "min": 50,
+                "max": 150
+            },
+            "replacement_cost": {
+                "min": 200,
+                "max": 1000
+            },
+            "labor_hours": {
+                "repair": 1,
+                "replacement": 2
+            }
+        },
+        "side_mirror": {
+            "name": "Side Mirror",
+            "repair_cost": {
+                "min": 50,
+                "max": 150
+            },
+            "replacement_cost": {
+                "min": 150,
+                "max": 600
+            },
+            "labor_hours": {
+                "repair": 0.5,
+                "replacement": 1
+            }
+        },
+        "roof": {
+            "name": "Roof Panel",
+            "repair_cost": {
+                "min": 300,
+                "max": 1200
+            },
+            "replacement_cost": {
+                "min": 1000,
+                "max": 4000
+            },
+            "labor_hours": {
+                "repair": 5,
+                "replacement": 10
+            }
+        },
+        "grille": {
+            "name": "Front Grille",
+            "repair_cost": {
+                "min": 50,
+                "max": 200
+            },
+            "replacement_cost": {
+                "min": 100,
+                "max": 800
+            },
+            "labor_hours": {
+                "repair": 0.5,
+                "replacement": 1
+            }
+        },
+        "rocker_panel": {
+            "name": "Rocker Panel",
+            "repair_cost": {
+                "min": 200,
+                "max": 600
+            },
+            "replacement_cost": {
+                "min": 500,
+                "max": 1500
+            },
+            "labor_hours": {
+                "repair": 3,
+                "replacement": 5
+            }
+        },
+        "wheel_rim": {
+            "name": "Wheel/Rim",
+            "repair_cost": {
+                "min": 75,
+                "max": 300
+            },
+            "replacement_cost": {
+                "min": 200,
+                "max": 2000
+            },
+            "labor_hours": {
+                "repair": 1,
+                "replacement": 0.5
+            }
+        }
+    },
+    "labor_rate_per_hour": 75,
+    "paint_cost_per_panel": {
+        "min": 200,
+        "max": 500
+    },
+    "severity_multipliers": {
+        "minor": 0.3,
+        "moderate": 0.6,
+        "severe": 1.0
+    },
+    "currency": "USD"
+}

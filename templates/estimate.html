@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Upload your vehicle damage photo and get an instant AI-powered repair cost estimate.">
+    <title>VisionClaim | Get Your Estimate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <svg class="logo-icon" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="14" cy="14" r="12" stroke="#3b82f6" stroke-width="2.5" />
+                    <circle cx="14" cy="14" r="5" fill="#3b82f6" />
+                    <path d="M14 2 L14 6 M14 22 L14 26 M2 14 L6 14 M22 14 L26 14" stroke="#3b82f6" stroke-width="2"
+                        stroke-linecap="round" />
+                </svg>
+                <span>VisionClaim</span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/#technology" class="nav-link">Technology</a>
+                <a href="/#how-it-works" class="nav-link">How it Works</a>
+            </div>
+            <div class="nav-actions">
+                <a href="/" class="btn btn-outline btn-sm">Back to Home</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Upload Section -->
+    <section class="estimate-section">
+        <div class="container">
+            <div class="estimate-header reveal">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    AI-POWERED ANALYSIS
+                </div>
+                <h1>Get Your <span class="gradient-text">Damage Estimate</span></h1>
+                <p>Upload a photo of your vehicle damage and our AI will analyze it in seconds.</p>
+            </div>
+
+            <div class="estimate-layout">
+                <!-- Upload Area -->
+                <div class="upload-panel reveal">
+                    <div class="upload-zone" id="uploadZone">
+                        <input type="file" id="fileInput" accept="image/*" hidden>
+                        <div class="upload-content" id="uploadContent">
+                            <div class="upload-icon">
+                                <svg viewBox="0 0 48 48" fill="none" stroke="#3b82f6" stroke-width="1.5">
+                                    <path d="M8 32l8-8 6 6 8-10 10 12" />
+                                    <rect x="4" y="8" width="40" height="32" rx="4" />
+                                    <circle cx="14" cy="18" r="3" />
+                                </svg>
+                            </div>
+                            <h3>Drop your image here</h3>
+                            <p>or <span class="upload-browse">browse files</span></p>
+                            <p class="upload-hint">Supports: JPG, PNG, WebP • Max 16MB</p>
+                        </div>
+                        <div class="upload-preview" id="uploadPreview" style="display:none;">
+                            <img id="previewImage" alt="Preview">
+                            <button class="btn-remove" id="removeImage" title="Remove image">&times;</button>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-full" id="analyzeBtn" disabled>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" />
+                            <path d="M3 16V8a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5Z" />
+                        </svg>
+                        Analyze Damage
+                    </button>
+
+                    <div class="divider-text"><span>or try a demo</span></div>
+
+                    <button class="btn btn-outline btn-full" id="demoBtn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" />
+                        </svg>
+                        Run Demo Analysis
+                    </button>
+                </div>
+
+                <!-- Results Area -->
+                <div class="results-panel" id="resultsPanel" style="display:none;">
+                    <!-- Loading State -->
+                    <div class="loading-state" id="loadingState">
+                        <div class="scanner-animation">
+                            <div class="scanner-ring"></div>
+                            <div class="scanner-ring delay-1"></div>
+                            <div class="scanner-ring delay-2"></div>
+                            <svg class="scanner-icon" viewBox="0 0 24 24" fill="none" stroke="#3b82f6"
+                                stroke-width="1.5">
+                                <path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" />
+                                <path d="M3 16V8a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5Z" />
+                            </svg>
+                        </div>
+                        <h3>Analyzing your image...</h3>
+                        <p>Our AI is detecting damage and estimating costs</p>
+                        <div class="loading-steps">
+                            <div class="load-step active" id="step1">
+                                <span class="step-dot"></span> Preprocessing image
+                            </div>
+                            <div class="load-step" id="step2">
+                                <span class="step-dot"></span> Detecting damage
+                            </div>
+                            <div class="load-step" id="step3">
+                                <span class="step-dot"></span> Estimating costs
+                            </div>
+                            <div class="load-step" id="step4">
+                                <span class="step-dot"></span> Generating report
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Results Content (hidden during loading) -->
+                    <div class="results-content" id="resultsContent" style="display:none;">
+                        <!-- Recommendation Banner -->
+                        <div class="recommendation-banner" id="recommendationBanner">
+                            <div class="rec-status" id="recStatus">PRE-APPROVED</div>
+                            <p id="recMessage"></p>
+                        </div>
+
+                        <!-- Report Header -->
+                        <div class="report-header">
+                            <div class="report-id" id="reportId"></div>
+                            <div class="report-date" id="reportDate"></div>
+                        </div>
+
+                        <!-- Vehicle Info -->
+                        <div class="info-card">
+                            <h4>Vehicle Information</h4>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <span class="info-label">Type</span>
+                                    <span class="info-value" id="vehicleType"></span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Color</span>
+                                    <span class="info-value" id="vehicleColor"></span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Drivable</span>
+                                    <span class="info-value" id="vehicleDrivable"></span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Severity</span>
+                                    <span class="info-value" id="overallSeverity"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Damage Breakdown -->
+                        <div class="info-card">
+                            <h4>Damage Assessment</h4>
+                            <p class="assess-summary" id="assessSummary"></p>
+                            <div class="damage-list" id="damageList"></div>
+                        </div>
+
+                        <!-- Cost Breakdown -->
+                        <div class="info-card">
+                            <h4>Cost Estimate</h4>
+                            <div class="cost-table" id="costTable"></div>
+                            <div class="cost-summary" id="costSummary"></div>
+                        </div>
+
+                        <!-- Next Steps -->
+                        <div class="info-card">
+                            <h4>Next Steps</h4>
+                            <div class="next-steps" id="nextSteps"></div>
+                        </div>
+
+                        <!-- Repair Timeline -->
+                        <div class="info-card">
+                            <div class="timeline-info">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6"
+                                    stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M12 6v6l4 2" />
+                                </svg>
+                                <span>Estimated repair time: <strong id="repairDays"></strong></span>
+                            </div>
+                        </div>
+
+                        <!-- Disclaimer -->
+                        <div class="disclaimer" id="disclaimer"></div>
+
+                        <!-- Actions -->
+                        <div class="result-actions">
+                            <button class="btn btn-primary" id="newAnalysisBtn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M12 5v14M5 12h14" />
+                                </svg>
+                                New Analysis
+                            </button>
+                            <button class="btn btn-outline" id="downloadReport">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                                </svg>
+                                Download Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <a href="/" class="nav-logo">
+                        <svg class="logo-icon" viewBox="0 0 28 28" fill="none">
+                            <circle cx="14" cy="14" r="12" stroke="#3b82f6" stroke-width="2.5" />
+                            <circle cx="14" cy="14" r="5" fill="#3b82f6" />
+                            <path d="M14 2L14 6M14 22L14 26M2 14L6 14M22 14L26 14" stroke="#3b82f6" stroke-width="2"
+                                stroke-linecap="round" />
+                        </svg>
+                        <span>VisionClaim</span>
+                    </a>
+                </div>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Security</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 VisionClaim AI Technologies. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/static/js/estimate.js"></script>
+</body>
+
+</html>
