@@ -1,24 +1,30 @@
-"""Damage detection module using Google Gemini Vision LLM."""
+"""Damage detection module using OpenAI GPT-4o Vision."""
 import json
 import os
-from google import genai
-from google.genai import types
+import base64
+from openai import OpenAI
 
-# Initialize the Gemini client
+# Initialize the OpenAI client
 client = None
 
 def init_client(api_key=None):
-    """Initialize the GenAI client."""
+    """Initialize the OpenAI client."""
     global client
-    key = api_key or os.environ.get('GOOGLE_API_KEY', '')
+    key = api_key or os.environ.get('OPENAI_API_KEY', '')
     if key:
-        client = genai.Client(api_key=key)
+        client = OpenAI(api_key=key)
     return client
+
+
+def encode_image(image_path):
+    """Encode the image to base64."""
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode('utf-8')
 
 
 def detect_damage(image_path):
     """
-    Analyze vehicle damage using Gemini Vision.
+    Analyze vehicle damage using OpenAI GPT-4o.
     Returns structured damage assessment data.
     """
     global client
@@ -26,12 +32,15 @@ def detect_damage(image_path):
         init_client()
 
     if not client:
-        # Fallback to simulated detection if no API key
-        return simulate_damage_detection(image_path)
+        raise ConnectionError("OpenAI client not initialized. Please ensure OPENAI_API_KEY is set in your .env file.")
 
     try:
-        # Upload image to Gemini
-        uploaded_file = client.files.upload(file=image_path)
+        # Encode image
+        base64_image = encode_image(image_path)
+        
+        # Determine media type
+        ext = image_path.rsplit('.', 1)[-1].lower()
+        media_type = f"image/{ext}" if ext != 'jpg' else 'image/jpeg'
 
         prompt = """You are a highly detailed real-time automotive damage assessor.
 Analyze this vehicle image in detail to identify CURRENT damage.
@@ -58,66 +67,30 @@ Return your analysis as a JSON object with this exact structure:
 IMPORTANT: Be extremely specific about damage locations and types.
 Only return the JSON, no other text."""
 
-        response = client.models.generate_content(
-            model="gemini-2.0-flash",
-            contents=[uploaded_file, prompt]
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": prompt},
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": f"data:{media_type};base64,{base64_image}"
+                            }
+                        }
+                    ]
+                }
+            ],
+            response_format={"type": "json_object"}
         )
 
         # Parse the JSON response
-        response_text = response.text.strip()
-        # Remove markdown code block if present
-        if response_text.startswith('```'):
-            response_text = response_text.split('\n', 1)[1]
-            response_text = response_text.rsplit('```', 1)[0]
-
-        result = json.loads(response_text)
+        result = json.loads(response.choices[0].message.content)
         return result
 
     except Exception as e:
-        print(f"Gemini API error: {e}")
-        return simulate_damage_detection(image_path)
-
-
-def simulate_damage_detection(image_path):
-    """
-    Simulated damage detection for demo purposes.
-    Returns realistic-looking assessment data.
-    """
-    return {
-        "vehicle_detected": True,
-        "vehicle_type": "sedan",
-        "vehicle_color": "white",
-        "damages": [
-            {
-                "part": "front_bumper",
-                "damage_type": "dent",
-                "severity": "moderate",
-                "confidence": 0.92,
-                "description": "Moderate dent on the front bumper with paint chipping"
-            },
-            {
-                "part": "headlight",
-                "damage_type": "crack",
-                "severity": "severe",
-                "confidence": 0.88,
-                "description": "Cracked headlight lens requiring replacement"
-            },
-            {
-                "part": "hood",
-                "damage_type": "scratch",
-                "severity": "minor",
-                "confidence": 0.85,
-                "description": "Surface scratches on hood panel"
-            },
-            {
-                "part": "front_fender",
-                "damage_type": "deformation",
-                "severity": "moderate",
-                "confidence": 0.90,
-                "description": "Deformation on the right front fender"
-            }
-        ],
-        "overall_severity": "moderate",
-        "drivable": True,
-        "summary": "The vehicle has sustained moderate front-end damage including a dented bumper, cracked headlight, scratched hood, and fender deformation. The vehicle appears drivable but requires prompt repairs."
-    }
+        error_msg = str(e)
+        print(f"OpenAI API error: {error_msg}")
+        raise e

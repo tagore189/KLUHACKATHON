@@ -18,8 +18,8 @@ app = Flask(__name__, static_folder='static', template_folder='templates')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max upload
 app.secret_key = os.environ.get('SECRET_KEY', 'visionclaim-dev-key-2024')
 
-# Initialize Gemini client
-init_client(os.environ.get('GOOGLE_API_KEY'))
+# Initialize OpenAI client
+init_client(os.environ.get('OPENAI_API_KEY'))
 
 
 @app.context_processor
@@ -144,12 +144,12 @@ def dashboard():
         scan['id_str'] = str(scan['_id'])
         # Extract meaningful info for cards
         report = scan.get('data', {})
-        scan['vehicle_name'] = report.get('detection_result', {}).get('vehicle_info', {}).get('make', 'Vehicle') + ' ' + \
-                               report.get('detection_result', {}).get('vehicle_info', {}).get('model', 'Scan')
-        scan['total_cost'] = report.get('cost_estimate', {}).get('summary', {}).get('total', 0)
-        scan['currency_symbol'] = report.get('cost_estimate', {}).get('summary', {}).get('symbol', '₹')
+        v_info = report.get('vehicle_info', {})
+        scan['vehicle_name'] = f"{v_info.get('color', 'Vehicle').title()} {v_info.get('type', 'Scan').title()}"
+        scan['total_cost'] = report.get('cost_estimate', {}).get('total', 0)
+        scan['currency_symbol'] = report.get('cost_estimate', {}).get('symbol', '₹')
         scan['date_formatted'] = scan['created_at'].strftime('%b %d, %Y')
-        scan['fault_count'] = len(report.get('detection_result', {}).get('damages', []))
+        scan['fault_count'] = len(report.get('damage_assessment', {}).get('damages', []))
 
     return render_template('dashboard.html', scans=scans)
 
@@ -165,6 +165,7 @@ def detailed_analysis(scan_id):
         flash('Scan not found.', 'error')
         return redirect(url_for('dashboard'))
         
+    scan['id_str'] = str(scan.get('_id', ''))
     report = scan.get('data', {})
     # Add display helpers if needed
     return render_template('analysis.html', scan=scan, report=report)
@@ -181,6 +182,7 @@ def payouts(scan_id):
         flash('Scan not found.', 'error')
         return redirect(url_for('dashboard'))
         
+    scan['id_str'] = str(scan.get('_id', ''))
     report = scan.get('data', {})
     return render_template('payouts.html', scan=scan, report=report)
 
@@ -260,39 +262,6 @@ def uploaded_file(filename):
     """Serve uploaded files."""
     upload_dir = ensure_upload_dir()
     return send_from_directory(upload_dir, filename)
-
-
-@app.route('/api/demo', methods=['POST'])
-def demo_analysis():
-    """Run analysis on a demo image."""
-    demo_dir = os.path.join(app.static_folder, 'demo_images')
-    demo_image = request.json.get('image', 'demo1.jpg')
-    filepath = os.path.join(demo_dir, demo_image)
-
-    if not os.path.exists(filepath):
-        # Use simulated data for demo
-        from utils.detection import simulate_damage_detection
-        detection_result = simulate_damage_detection(None)
-        severity_assessment = assess_severity(detection_result.get('damages', []))
-        cost_estimate = estimate_costs(
-            detection_result.get('damages', []), 
-            severity_assessment,
-            target_currency=session.get('currency', 'INR')
-        )
-        report = generate_report(detection_result, severity_assessment, cost_estimate, image_filename='demo')
-        report['image_url'] = '/static/demo_images/demo1.jpg'
-        return jsonify(report)
-
-    detection_result = detect_damage(filepath)
-    severity_assessment = assess_severity(detection_result.get('damages', []))
-    cost_estimate = estimate_costs(
-        detection_result.get('damages', []), 
-        severity_assessment,
-        target_currency=session.get('currency', 'INR')
-    )
-    report = generate_report(detection_result, severity_assessment, cost_estimate, image_filename=demo_image)
-    report['image_url'] = f'/static/demo_images/{demo_image}'
-    return jsonify(report)
 
 
 if __name__ == '__main__':

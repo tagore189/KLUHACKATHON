@@ -37,7 +37,8 @@
         <header class="dash-header" style="display: flex; justify-content: space-between; align-items: center;">
             <div>
                 <h1 class="dash-title">AI Damage Analysis</h1>
-                <p class="dash-subtitle">Scan complete. {{ report.detection_result.damages|length }} anomalies detected.
+                <p class="dash-subtitle">Scan complete. {{ report.damage_assessment.damages|length }} anomalies
+                    detected.
                 </p>
             </div>
             <div class="analysis-status">
@@ -69,21 +70,23 @@
                 <div class="thumbnail-strip" style="display: flex; gap: 12px; margin-top: 20px;">
                     <div class="thumb active"
                         style="width: 80px; height: 60px; border: 2px solid var(--accent-blue); border-radius: 8px; overflow: hidden;">
-                        <img src="{{ report.image_url }}" style="width:100%; height:100%; object-fit:cover;"></div>
+                        <img src="{{ report.image_url }}" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
                     <div class="thumb"
                         style="width: 80px; height: 60px; background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--text-dim);">
                         <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                             <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                             <path
                                 d="M2 4a2 2 0 0 1 2-2h7.929A2 2 0 0 1 13.344 3.03l.353.353c.123.123.284.185.45.185a.731.731 0 0 1 .531 1.25l-.261.26a.987.987 0 0 0-.287.677V13a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4z" />
-                        </svg></div>
+                        </svg>
+                    </div>
                 </div>
             </div>
 
             <aside class="analysis-sidebar">
                 <h3 style="margin-bottom: 20px; font-size: 1.1rem;">Detected Anomalies</h3>
                 <div class="anomaly-list">
-                    {% for damage in report.detection_result.damages %}
+                    {% for damage in report.damage_assessment.damages %}
                     <div class="anomaly-card">
                         <div>
                             <span style="font-size: 10px; color: var(--text-dim); text-transform: uppercase;">Anomaly
@@ -94,8 +97,7 @@
                         <div style="text-align: right;">
                             <span class="anomaly-match">9{{ range(1, 9)|random }}.{{ range(1, 9)|random }}% Match</span>
                             <div style="font-size: 0.9rem; font-weight: 700; margin-top: 4px;">{{
-                                report.cost_estimate.summary.symbol }}{{ "{:,.2f}".format(damage.part_cost if
-                                damage.part_cost else 0) }}</div>
+                                report.cost_estimate.symbol }}{{ "{:,.2f}".format((damage.part_cost|default(0))|float) }}</div>
                         </div>
                     </div>
                     {% endfor %}
@@ -110,8 +112,8 @@
                     </div>
                     <div
                         style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 25px;">
-                        <span style="font-size: 1.8rem; font-weight: 800;">{{ report.cost_estimate.summary.symbol }}{{
-                            "{:,.2f}".format(report.cost_estimate.summary.total) }}</span>
+                        <span style="font-size: 1.8rem; font-weight: 800;">{{ report.cost_estimate.symbol }}{{
+                            "{:,.2f}".format(report.cost_estimate.total) }}</span>
                         <span style="color: var(--accent-blue); font-size: 0.85rem;">$0.00 (Waived)</span>
                     </div>
 

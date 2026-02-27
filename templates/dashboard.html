@@ -58,7 +58,9 @@
             {% for scan in scans %}
             <article class="scan-card">
                 <div class="card-img-wrap">
-                    <img src="{{ scan.data.image_url }}" alt="Vehicle Scan">
+                    <a href="/analysis/{{ scan.id_str }}">
+                        <img src="{{ scan.data.image_url }}" alt="Vehicle Scan">
+                    </a>
                     <span
                         class="status-badge {% if scan.status == 'Completed' %}status-completed{% else %}status-review{% endif %}">
                         {{ scan.status }}

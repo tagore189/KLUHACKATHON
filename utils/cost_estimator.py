@@ -6,7 +6,7 @@ import os
 def load_cost_data():
     """Load cost data from the JSON database."""
     db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'database', 'cost_data.json')
-    with open(db_path, 'r') as f:
+    with open(db_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 
