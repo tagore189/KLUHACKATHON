@@ -4,11 +4,8 @@ import bcrypt
 from datetime import datetime, timezone
 from pymongo import MongoClient, errors
 from pymongo.collection import Collection
-
 _client: MongoClient | None = None
 _db = None
-
-
 def get_db():
     """Return the database instance, creating the client if needed."""
     global _client, _db
@@ -84,6 +81,38 @@ def verify_user(email: str, password: str) -> dict | None:
         {'$set': {'last_login': datetime.now(timezone.utc)}}
     )
     return _safe(user)
+
+
+# ── Scan Persistence ──────────────────────────────────────────────────────────
+
+def save_scan(user_id: str, scan_data: dict) -> str:
+    """Save a scan report for a user."""
+    db = get_db()
+    scan_doc = {
+        'user_id': user_id,
+        'scan_id': scan_data.get('scan_id', f"SCAN-{datetime.now().strftime('%y%m%d%H%M%S')}"),
+        'data': scan_data,
+        'created_at': datetime.now(timezone.utc),
+        'status': 'Completed' if scan_data.get('severity_assessment', {}).get('overall') != 'severe' else 'Under Review'
+    }
+    result = db.scans.insert_one(scan_doc)
+    return str(result.inserted_id)
+
+
+def get_user_scans(user_id: str):
+    """Retrieve all scans for a specific user, newest first."""
+    db = get_db()
+    return list(db.scans.find({'user_id': user_id}).sort('created_at', -1))
+
+
+def get_scan(scan_id: str, user_id: str = None):
+    """Retrieve a specific scan by its database ID."""
+    from bson.objectid import ObjectId
+    db = get_db()
+    query = {'_id': ObjectId(scan_id)}
+    if user_id:
+        query['user_id'] = user_id
+    return db.scans.find_one(query)
 
 
 def _safe(user: dict) -> dict:

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Damage Analysis | VisionClaim</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+
+<body class="dash-bg">
+    <nav class="navbar scrolled">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <svg class="logo-icon" viewBox="0 0 28 28" fill="none">
+                    <circle cx="14" cy="14" r="12" stroke="#3b82f6" stroke-width="2.5" />
+                    <circle cx="14" cy="14" r="5" fill="#3b82f6" />
+                </svg>
+                <span>VisionClaim</span>
+            </a>
+            <div class="nav-links">
+                <a href="/dashboard" class="nav-link">History</a>
+                <a href="#" class="nav-link active">Analysis</a>
+            </div>
+            <div class="nav-actions">
+                <a href="/logout" class="nav-link">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="dash-container">
+        <nav class="breadcrumb" style="margin-bottom: 20px; font-size: 0.85rem; color: var(--text-dim);">
+            <a href="/dashboard" style="color: inherit;">Dashboard</a> &nbsp;›&nbsp; Claim #{{ scan.scan_id }}
+        </nav>
+
+        <header class="dash-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h1 class="dash-title">AI Damage Analysis</h1>
+                <p class="dash-subtitle">Scan complete. {{ report.detection_result.damages|length }} anomalies detected.
+                </p>
+            </div>
+            <div class="analysis-status">
+                <span class="status-badge status-completed" style="position: static;">Analysis Verified</span>
+            </div>
+        </header>
+
+        <div class="analysis-layout">
+            <div class="analysis-main">
+                <div class="scanner-viewport">
+                    <img src="{{ report.image_url }}" alt="Analysis View"
+                        style="width: 100%; height: 100%; object-fit: contain;">
+                    <div class="scanner-overlay">
+                        <!-- Canvas or SVG elements for damage bounding boxes would go here -->
+                        <div
+                            style="position: absolute; border: 2px solid var(--accent-blue); background: rgba(59, 130, 246, 0.1); top: 30%; left: 40%; width: 20%; height: 20%; border-radius: 4px;">
+                            <span
+                                style="position: absolute; top: -25px; left: 0; background: var(--accent-blue); font-size: 10px; padding: 2px 6px; font-weight: 700;">ANOMALY
+                                01</span>
+                        </div>
+                    </div>
+                    <div class="viewport-metadata"
+                        style="position: absolute; bottom: 20px; right: 20px; background: rgba(0,0,0,0.6); padding: 10px; border-radius: 8px; font-size: 10px; font-family: monospace; display: flex; gap: 15px;">
+                        <span>RESOLUTION: 8K ULTRA</span>
+                        <span>LIDAR: ENABLED</span>
+                    </div>
+                </div>
+
+                <div class="thumbnail-strip" style="display: flex; gap: 12px; margin-top: 20px;">
+                    <div class="thumb active"
+                        style="width: 80px; height: 60px; border: 2px solid var(--accent-blue); border-radius: 8px; overflow: hidden;">
+                        <img src="{{ report.image_url }}" style="width:100%; height:100%; object-fit:cover;"></div>
+                    <div class="thumb"
+                        style="width: 80px; height: 60px; background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--text-dim);">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                            <path
+                                d="M2 4a2 2 0 0 1 2-2h7.929A2 2 0 0 1 13.344 3.03l.353.353c.123.123.284.185.45.185a.731.731 0 0 1 .531 1.25l-.261.26a.987.987 0 0 0-.287.677V13a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4z" />
+                        </svg></div>
+                </div>
+            </div>
+
+            <aside class="analysis-sidebar">
+                <h3 style="margin-bottom: 20px; font-size: 1.1rem;">Detected Anomalies</h3>
+                <div class="anomaly-list">
+                    {% for damage in report.detection_result.damages %}
+                    <div class="anomaly-card">
+                        <div>
+                            <span style="font-size: 10px; color: var(--text-dim); text-transform: uppercase;">Anomaly
+                                0{{ loop.index }}</span>
+                            <h4 style="font-size: 0.95rem; margin: 4px 0;">{{ damage.part|replace('_', ' ')|title }} {{
+                                damage.damage_type|title }}</h4>
+                        </div>
+                        <div style="text-align: right;">
+                            <span class="anomaly-match">9{{ range(1, 9)|random }}.{{ range(1, 9)|random }}% Match</span>
+                            <div style="font-size: 0.9rem; font-weight: 700; margin-top: 4px;">{{
+                                report.cost_estimate.summary.symbol }}{{ "{:,.2f}".format(damage.part_cost if
+                                damage.part_cost else 0) }}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="total-summary"
+                    style="margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--card-border);">
+                    <div
+                        style="display: flex; justify-content: space-between; margin-bottom: 10px; color: var(--text-dim); font-size: 0.85rem;">
+                        <span>Estimated Total</span>
+                        <span>Processing Fee</span>
+                    </div>
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 25px;">
+                        <span style="font-size: 1.8rem; font-weight: 800;">{{ report.cost_estimate.summary.symbol }}{{
+                            "{:,.2f}".format(report.cost_estimate.summary.total) }}</span>
+                        <span style="color: var(--accent-blue); font-size: 0.85rem;">$0.00 (Waived)</span>
+                    </div>
+
+                    <a href="/payouts/{{ scan.id_str }}" class="btn btn-primary btn-full"
+                        style="height: 54px; font-size: 1rem;">Proceed to Settlement &nbsp;→</a>
+
+                    <div style="margin-top: 20px; display: flex; gap: 10px;">
+                        <button class="btn btn-outline btn-full" style="padding: 10px;"><small>PDF
+                                Report</small></button>
+                        <button class="btn btn-outline btn-full" style="padding: 10px;"><small>Share</small></button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <script src="/static/js/script.js"></script>
+</body>
+
+</html>

@@ -29,8 +29,12 @@
             </a>
             <div class="nav-links" id="navLinks">
                 <a href="/" class="nav-link">Home</a>
-                <a href="/#technology" class="nav-link">Technology</a>
+                {% if session.user %}
+                <a href="/dashboard" class="nav-link">History</a>
+                <a href="/estimate" class="nav-link active">Analysis</a>
+                {% else %}
                 <a href="/#how-it-works" class="nav-link">How it Works</a>
+                {% endif %}
             </div>
             <div class="nav-actions">
                 <div class="currency-selector">
@@ -42,7 +46,11 @@
                         {% endfor %}
                     </select>
                 </div>
+                {% if session.user %}
+                <a href="/logout" class="nav-link">Log out</a>
+                {% else %}
                 <a href="/" class="btn btn-outline btn-sm">Back to Home</a>
+                {% endif %}
             </div>
             <button class="hamburger" id="hamburger" aria-label="Toggle menu">
                 <span></span><span></span><span></span>
@@ -224,6 +232,13 @@
                                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
                                 </svg>
                                 Download Report
+                            </button>
+                            <button class="btn btn-outline" id="shareReport">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13" />
+                                </svg>
+                                Share
                             </button>
                         </div>
                     </div>

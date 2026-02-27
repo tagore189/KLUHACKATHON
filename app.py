@@ -9,7 +9,7 @@ from utils.detection import detect_damage, init_client
 from utils.severity import assess_severity
 from utils.cost_estimator import estimate_costs, load_cost_data
 from utils.report_generator import generate_report
-from database.db import create_user, verify_user, get_db
+from database.db import create_user, verify_user, get_db, save_scan, get_user_scans, get_scan
 from pymongo import errors as mongo_errors
 
 load_dotenv()
@@ -73,7 +73,7 @@ def login():
                 if user:
                     session['user'] = user
                     flash(f'Welcome back, {user["first_name"]}! 👋', 'success')
-                    return redirect(url_for('estimate'))
+                    return redirect(url_for('dashboard'))
                 else:
                     flash('Invalid email or password. Please try again.', 'error')
             except Exception as e:
@@ -106,7 +106,7 @@ def signup():
                 user = create_user(first_name, last_name, email, password)
                 session['user'] = user
                 flash(f'Account created! Welcome to VisionClaim, {first_name} 🎉', 'success')
-                return redirect(url_for('estimate'))
+                return redirect(url_for('dashboard'))
             except ValueError as e:
                 flash(str(e), 'error')
             except Exception as e:
@@ -127,6 +127,62 @@ def logout():
 def estimate():
     """Upload & estimate page."""
     return render_template('estimate.html')
+
+
+@app.route('/dashboard')
+def dashboard():
+    """User scan history dashboard."""
+    if not session.get('user'):
+        flash('Please log in to view your dashboard.', 'info')
+        return redirect(url_for('login'))
+    
+    user_id = session['user']['id']
+    scans = get_user_scans(user_id)
+    
+    # Process scans for display
+    for scan in scans:
+        scan['id_str'] = str(scan['_id'])
+        # Extract meaningful info for cards
+        report = scan.get('data', {})
+        scan['vehicle_name'] = report.get('detection_result', {}).get('vehicle_info', {}).get('make', 'Vehicle') + ' ' + \
+                               report.get('detection_result', {}).get('vehicle_info', {}).get('model', 'Scan')
+        scan['total_cost'] = report.get('cost_estimate', {}).get('summary', {}).get('total', 0)
+        scan['currency_symbol'] = report.get('cost_estimate', {}).get('summary', {}).get('symbol', '₹')
+        scan['date_formatted'] = scan['created_at'].strftime('%b %d, %Y')
+        scan['fault_count'] = len(report.get('detection_result', {}).get('damages', []))
+
+    return render_template('dashboard.html', scans=scans)
+
+
+@app.route('/analysis/<scan_id>')
+def detailed_analysis(scan_id):
+    """Detailed AI Damage Analysis view."""
+    if not session.get('user'):
+        return redirect(url_for('login'))
+        
+    scan = get_scan(scan_id, user_id=session['user']['id'])
+    if not scan:
+        flash('Scan not found.', 'error')
+        return redirect(url_for('dashboard'))
+        
+    report = scan.get('data', {})
+    # Add display helpers if needed
+    return render_template('analysis.html', scan=scan, report=report)
+
+
+@app.route('/payouts/<scan_id>')
+def payouts(scan_id):
+    """Settlement and Payouts view."""
+    if not session.get('user'):
+        return redirect(url_for('login'))
+        
+    scan = get_scan(scan_id, user_id=session['user']['id'])
+    if not scan:
+        flash('Scan not found.', 'error')
+        return redirect(url_for('dashboard'))
+        
+    report = scan.get('data', {})
+    return render_template('payouts.html', scan=scan, report=report)
 
 
 @app.route('/api/analyze', methods=['POST'])
@@ -184,6 +240,14 @@ def analyze():
 
         report['image_url'] = f'/uploads/{filename}'
         report['image_metadata'] = metadata
+
+        # Persist to database if logged in
+        if session.get('user'):
+            try:
+                scan_db_id = save_scan(session['user']['id'], report)
+                report['scan_db_id'] = scan_db_id
+            except Exception as db_err:
+                print(f"Failed to save scan: {db_err}")
 
         return jsonify(report)
 

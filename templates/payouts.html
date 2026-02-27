@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settlement | VisionClaim AI</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+
+<body class="dash-bg">
+    <nav class="navbar scrolled">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <svg class="logo-icon" viewBox="0 0 28 28" fill="none">
+                    <circle cx="14" cy="14" r="12" stroke="#3b82f6" stroke-width="2.5" />
+                    <circle cx="14" cy="14" r="5" fill="#3b82f6" />
+                </svg>
+                <span>VisionClaim</span>
+            </a>
+            <div class="nav-links">
+                <a href="/dashboard" class="nav-link">History</a>
+                <a href="#" class="nav-link active">Payouts</a>
+            </div>
+            <div class="nav-actions">
+                <a href="/logout" class="nav-link">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="dash-container" style="text-align: center; max-width: 900px;">
+        <div class="settlement-badge"
+            style="display: inline-flex; align-items: center; gap: 8px; background: rgba(34, 197, 94, 0.1); color: var(--accent-green); padding: 6px 16px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; margin-bottom: 24px;">
+            <svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+                <path
+                    d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l2.552 2.55 5.92-5.903z" />
+            </svg>
+            CLAIM #{{ scan.scan_id }} APPROVED
+        </div>
+
+        <h2
+            style="font-size: 1rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px;">
+            Total Payout Amount</h2>
+        <h1 style="font-size: 4rem; font-weight: 800; margin-bottom: 16px;">{{ report.cost_estimate.summary.symbol }}{{
+            "{:,.2f}".format(report.cost_estimate.summary.total) }}</h1>
+        <p style="color: var(--text-dim); max-width: 500px; margin: 0 auto 40px;">Your instant claim assessment is
+            complete. Select your preferred settlement method below to receive funds.</p>
+
+        <section class="settlement-options">
+            <div class="payout-method active">
+                <div
+                    style="background: rgba(59, 130, 246, 0.1); width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--accent-blue); margin-bottom: 16px;">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M2.25 18.75V7.5c0-1.105.895-2 2-2h15.5c1.105 0 2 .895 2 2v11.25m-19.5 0c0 1.105.895 2 2 2h15.5c1.105 0 2-.895 2-2m-19.5 0l1.81-2.812M22.5 18.75l-1.81-2.812M15 11.25H9M10.5 15.75L9 11.25l-1.5 4.5" />
+                    </svg>
+                </div>
+                <h3 style="font-size: 1rem; margin-bottom: 4px;">Direct Deposit</h3>
+                <p style="font-size: 0.8rem; color: var(--text-dim);">1-2 Business Days</p>
+                <span
+                    style="font-size: 0.65rem; color: var(--accent-blue); font-weight: 800; margin-top: 12px; display: block;">RECOMMENDED</span>
+            </div>
+            <div class="payout-method">
+                <div
+                    style="background: rgba(255, 255, 255, 0.05); width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; margin-bottom: 16px;">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12H3m18 0l-3.75-3.75M21 12l-3.75 3.75" />
+                    </svg>
+                </div>
+                <h3 style="font-size: 1rem; margin-bottom: 4px;">Digital Wallet</h3>
+                <p style="font-size: 0.8rem; color: var(--text-dim);">Instant Transfer</p>
+            </div>
+            <div class="payout-method">
+                <div
+                    style="background: rgba(255, 255, 255, 0.05); width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; margin-bottom: 16px;">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5A3.375 3.375 0 0 0 10.125 2.25H3.75A2.25 2.25 0 0 0 1.5 4.5v12a2.25 2.25 0 0 0 2.25 2.25h13.125c.621 0 1.125-.504 1.125-1.125V14.25Z" />
+                    </svg>
+                </div>
+                <h3 style="font-size: 1rem; margin-bottom: 4px;">Insurance Credit</h3>
+                <p style="font-size: 0.8rem; color: var(--text-dim);">Applied to Premium</p>
+            </div>
+        </section>
+
+        <button class="btn btn-primary" style="margin-top: 40px; width: 100%; height: 54px; font-size: 1rem;">Confirm
+            Payout &nbsp;→</button>
+        <p style="font-size: 0.7rem; color: var(--text-dim); margin-top: 16px;">By clicking confirm, you agree to the
+            VisionClaim Settlement Terms.</p>
+
+        <section class="shops" style="margin-top: 80px; text-align: left;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <h2 style="font-size: 1.5rem;">Recommended Repair Shops</h2>
+                <a href="#" style="color: var(--accent-blue); font-size: 0.85rem; text-decoration: none;">View All
+                    &nbsp;↗</a>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                <div
+                    style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; overflow: hidden; display: flex;">
+                    <div style="flex: 1; min-height: 200px; background: #1e293b; position: relative;">
+                        <!-- Map Placeholder -->
+                        <div
+                            style="position: absolute; top:0; left:0; width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.1);">
+                            [MAP VIEW]</div>
+                        <div
+                            style="position: absolute; bottom: 10px; left: 10px; background: rgba(0,0,0,0.8); padding: 5px 10px; border-radius: 6px; font-size: 10px;">
+                            AutoRefined Diagnostics</div>
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div
+                        style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 16px; display: flex; gap: 16px; align-items: center;">
+                        <div
+                            style="background: rgba(255,255,255,0.05); width: 44px; height: 44px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                            🛠️</div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <h4 style="font-size: 0.95rem;">AutoRefined Diagnostics</h4>
+                                <span style="font-size: 0.85rem; color: var(--accent-orange);">★ 4.9</span>
+                            </div>
+                            <p style="font-size: 0.75rem; color: var(--text-dim); margin: 4px 0;">Certified for Hybrid
+                                Vehicles</p>
+                            <div style="display: flex; gap: 12px; font-size: 0.75rem;">
+                                <span style="color: var(--accent-blue);">Available Tomorrow</span>
+                                <span>0.8 mi</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 16px; display: flex; gap: 16px; align-items: center;">
+                        <div
+                            style="background: rgba(255,255,255,0.05); width: 44px; height: 44px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                            🔧</div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <h4 style="font-size: 0.95rem;">Mission Bay Collision</h4>
+                                <span style="font-size: 0.85rem; color: var(--accent-orange);">★ 4.7</span>
+                            </div>
+                            <p style="font-size: 0.75rem; color: var(--text-dim); margin: 4px 0;">Full body work
+                                specialized</p>
+                            <div style="display: flex; gap: 12px; font-size: 0.75rem;">
+                                <span style="color: var(--accent-blue);">Priority Network</span>
+                                <span>1.4 mi</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/static/js/script.js"></script>
+</body>
+
+</html>

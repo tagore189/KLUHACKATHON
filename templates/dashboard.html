@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | VisionClaim AI</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+
+<body class="dash-bg">
+    <nav class="navbar scrolled">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <svg class="logo-icon" viewBox="0 0 28 28" fill="none">
+                    <circle cx="14" cy="14" r="12" stroke="#3b82f6" stroke-width="2.5" />
+                    <circle cx="14" cy="14" r="5" fill="#3b82f6" />
+                </svg>
+                <span>VisionClaim</span>
+            </a>
+            <div class="nav-links">
+                <a href="/dashboard" class="nav-link active">History</a>
+                <a href="/estimate" class="nav-link">New Scan</a>
+            </div>
+            <div class="nav-actions">
+                <div class="currency-selector">
+                    <select class="currency-select" id="currencySelect">
+                        {% for code, info in exchange_rates.items() %}
+                        <option value="{{ code }}" {% if code==selected_currency %}selected{% endif %}>{{ info.label }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <a href="/logout" class="nav-link">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="dash-container">
+        <header class="dash-header">
+            <h1 class="dash-title">My Vehicle Scans</h1>
+            <p class="dash-subtitle">Manage and track your AI-powered damage assessments.</p>
+        </header>
+
+        <section class="filter-bar">
+            <div class="tab-group">
+                <button class="tab-btn active">All Scans <span class="tab-count">{{ scans|length }}</span></button>
+                <button class="tab-btn">Completed</button>
+                <button class="tab-btn">Under Review</button>
+            </div>
+            <div class="dash-actions">
+                <a href="/estimate" class="btn btn-primary btn-sm">+ New Scan</a>
+            </div>
+        </section>
+
+        <div class="scan-grid">
+            {% for scan in scans %}
+            <article class="scan-card">
+                <div class="card-img-wrap">
+                    <img src="{{ scan.data.image_url }}" alt="Vehicle Scan">
+                    <span
+                        class="status-badge {% if scan.status == 'Completed' %}status-completed{% else %}status-review{% endif %}">
+                        {{ scan.status }}
+                    </span>
+                </div>
+                <div class="card-body">
+                    <div class="card-header-row">
+                        <h3 class="card-v-name">{{ scan.vehicle_name }}</h3>
+                        <span class="card-price">{{ scan.currency_symbol }}{{ "{:,.2f}".format(scan.total_cost)
+                            }}</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5" />
+                            </svg>
+                            {{ scan.date_formatted }}
+                        </div>
+                        <div class="meta-item">
+                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1m0 12.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11" />
+                                <path d="M7 8.5V4h1v3.5l2.5 1.5-.5.8z" />
+                            </svg>
+                            {{ scan.fault_count }} Points Detected
+                        </div>
+                    </div>
+                    <a href="/analysis/{{ scan.id_str }}" class="btn btn-outline btn-full">View Detailed Analysis</a>
+                </div>
+            </article>
+            {% endfor %}
+
+            {% if not scans %}
+            <div class="empty-state"
+                style="grid-column: 1/-1; text-align: center; padding: 60px; background: rgba(255,255,255,0.02); border-radius: 20px; border: 1px dashed var(--card-border);">
+                <p style="color: var(--text-dim);">No scans found yet.</p>
+                <a href="/estimate" class="btn btn-primary" style="margin-top: 20px;">Start Your First Scan</a>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <script src="/static/js/script.js"></script>
+    <script src="/static/js/dashboard.js"></script>
+</body>
+
+</html>

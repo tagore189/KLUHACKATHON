@@ -28,9 +28,14 @@
                 <span>VisionClaim</span>
             </a>
             <div class="nav-links" id="navLinks">
+                {% if session.user %}
+                <a href="/dashboard" class="nav-link">Dashboard</a>
+                <a href="/estimate" class="nav-link">New Scan</a>
+                {% else %}
                 <a href="#how-it-works" class="nav-link">How it Works</a>
                 <a href="#technology" class="nav-link">Technology</a>
                 <a href="#features" class="nav-link">Enterprise</a>
+                {% endif %}
                 <a href="#pricing" class="nav-link">Pricing</a>
             </div>
             <div class="nav-actions">
@@ -43,8 +48,17 @@
                         {% endfor %}
                     </select>
                 </div>
+                {% if session.user %}
+                <a href="/logout" class="nav-link nav-login">Log out</a>
+                <a href="/dashboard" class="avatar-link" title="My Profile">
+                    <div class="avatar"
+                        style="width:32px; height:32px; font-size: 12px; background: linear-gradient(135deg, #3b82f6, #8b5cf6);">
+                        {{ session.user.first_name[0] }}</div>
+                </a>
+                {% else %}
                 <a href="/login" class="nav-link nav-login">Log in</a>
                 <a href="/signup" class="btn btn-primary btn-sm" id="getStartedNav">Get Started</a>
+                {% endif %}
             </div>
             <button class="hamburger" id="hamburger" aria-label="Toggle menu">
                 <span></span>
