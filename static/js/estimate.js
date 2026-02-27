@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initUpload();
     initDemo();
     initResultActions();
+    if (typeof initCurrencySelector === 'function') initCurrencySelector();
 });
 
 /* --------- Navbar (shared) --------- */
@@ -270,21 +271,21 @@ function displayReport(report) {
         costTable.innerHTML += `
             <div class="cost-line">
                 <div class="part-name">${item.part_name}<span class="action-badge">${item.action}</span></div>
-                <div>$${item.part_cost.toLocaleString()}</div>
-                <div>$${item.labor_cost.toLocaleString()}</div>
-                <div class="cost-col-4">$${item.subtotal.toLocaleString()}</div>
+                <div>₹${item.part_cost.toLocaleString()}</div>
+                <div>₹${item.labor_cost.toLocaleString()}</div>
+                <div class="cost-col-4">₹${item.subtotal.toLocaleString()}</div>
             </div>`;
     });
 
     // Cost summary
     const cs = report.cost_estimate;
     document.getElementById('costSummary').innerHTML = `
-        <div class="cost-row"><span>Parts & Materials</span><span>$${cs.total_parts.toLocaleString()}</span></div>
-        <div class="cost-row"><span>Labor</span><span>$${cs.total_labor.toLocaleString()}</span></div>
-        <div class="cost-row"><span>Paint & Finish</span><span>$${cs.total_paint.toLocaleString()}</span></div>
-        <div class="cost-row"><span>Subtotal</span><span>$${cs.subtotal.toLocaleString()}</span></div>
-        <div class="cost-row"><span>Tax (${(cs.tax_rate * 100).toFixed(0)}%)</span><span>$${cs.tax.toLocaleString()}</span></div>
-        <div class="cost-row total"><span>Total Estimate</span><span>$${cs.total.toLocaleString()}</span></div>
+        <div class="cost-row"><span>Parts & Materials</span><span>₹${cs.total_parts.toLocaleString()}</span></div>
+        <div class="cost-row"><span>Labor</span><span>₹${cs.total_labor.toLocaleString()}</span></div>
+        <div class="cost-row"><span>Paint & Finish</span><span>₹${cs.total_paint.toLocaleString()}</span></div>
+        <div class="cost-row"><span>Subtotal</span><span>₹${cs.subtotal.toLocaleString()}</span></div>
+        <div class="cost-row"><span>Tax (${(cs.tax_rate * 100).toFixed(0)}%)</span><span>₹${cs.tax.toLocaleString()}</span></div>
+        <div class="cost-row total"><span>Total Estimate</span><span>₹${cs.total.toLocaleString()}</span></div>
     `;
 
     // Next steps
@@ -349,25 +350,25 @@ function getSimulatedReport() {
             ]
         },
         cost_estimate: {
-            total_parts: 870.00,
-            total_labor: 637.50,
-            total_paint: 860.00,
-            subtotal: 2367.50,
-            tax_rate: 0.08,
-            tax: 189.40,
-            total: 2556.90,
-            currency: 'USD'
+            total_parts: 65250.00,
+            total_labor: 48000.50,
+            total_paint: 64500.00,
+            subtotal: 177750.50,
+            tax_rate: 0.18,
+            tax: 31995.09,
+            total: 209745.59,
+            currency: 'INR'
         },
         line_items: [
-            { part_name: 'Front Bumper', action: 'Repair', damage_type: 'Dent', severity: 'moderate', part_cost: 420, labor_cost: 150, labor_hours: 2, paint_cost: 290, subtotal: 860 },
-            { part_name: 'Headlight Assembly', action: 'Replace', damage_type: 'Crack', severity: 'severe', part_cost: 200, labor_cost: 75, labor_hours: 1, paint_cost: 0, subtotal: 275 },
-            { part_name: 'Hood', action: 'Repair', damage_type: 'Scratch', severity: 'minor', part_cost: 80, labor_cost: 225, labor_hours: 3, paint_cost: 290, subtotal: 595 },
-            { part_name: 'Front Fender', action: 'Repair', damage_type: 'Deformation', severity: 'moderate', part_cost: 170, labor_cost: 187.50, labor_hours: 2.5, paint_cost: 280, subtotal: 637.50 }
+            { part_name: 'Front Bumper', action: 'Repair', damage_type: 'Dent', severity: 'moderate', part_cost: 31500, labor_cost: 11250, labor_hours: 2, paint_cost: 21750, subtotal: 64500 },
+            { part_name: 'Headlight Assembly', action: 'Replace', damage_type: 'Crack', severity: 'severe', part_cost: 15000, labor_cost: 5625, labor_hours: 1, paint_cost: 0, subtotal: 20625 },
+            { part_name: 'Hood', action: 'Repair', damage_type: 'Scratch', severity: 'minor', part_cost: 6000, labor_cost: 16875, labor_hours: 3, paint_cost: 21750, subtotal: 44625 },
+            { part_name: 'Front Fender', action: 'Repair', damage_type: 'Deformation', severity: 'moderate', part_cost: 12750, labor_cost: 14062.50, labor_hours: 2.5, paint_cost: 21000, subtotal: 47812.50 }
         ],
         recommendation: {
             status: 'PRE-APPROVED',
             status_color: '#22c55e',
-            message: 'This claim of $2,556.90 is pre-approved. A brief review may be conducted.',
+            message: 'This claim of ₹2,09,745.59 is pre-approved. A brief review may be conducted.',
             next_steps: [
                 'Select a certified repair facility',
                 'An adjuster may contact you within 24 hours',

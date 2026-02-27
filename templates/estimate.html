@@ -33,6 +33,15 @@
                 <a href="/#how-it-works" class="nav-link">How it Works</a>
             </div>
             <div class="nav-actions">
+                <div class="currency-selector">
+                    <select class="currency-select" id="currencySelect" aria-label="Select Currency">
+                        {% for code, info in exchange_rates.items() %}
+                        <option value="{{ code }}" {% if code==selected_currency %}selected{% endif %}>
+                            {{ info.label }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
                 <a href="/" class="btn btn-outline btn-sm">Back to Home</a>
             </div>
             <button class="hamburger" id="hamburger" aria-label="Toggle menu">

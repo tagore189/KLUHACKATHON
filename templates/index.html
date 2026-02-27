@@ -34,6 +34,15 @@
                 <a href="#pricing" class="nav-link">Pricing</a>
             </div>
             <div class="nav-actions">
+                <div class="currency-selector">
+                    <select class="currency-select" id="currencySelect" aria-label="Select Currency">
+                        {% for code, info in exchange_rates.items() %}
+                        <option value="{{ code }}" {% if code==selected_currency %}selected{% endif %}>
+                            {{ info.label }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
                 <a href="/login" class="nav-link nav-login">Log in</a>
                 <a href="/signup" class="btn btn-primary btn-sm" id="getStartedNav">Get Started</a>
             </div>
@@ -140,7 +149,9 @@
                         </div>
                         <div class="overlay-estimate">
                             <span class="estimate-label">EST. REPAIR</span>
-                            <span class="estimate-value">$1,400.00</span>
+                            <span class="estimate-value">{{ currency_symbol }}{% if selected_currency == 'INR'
+                                %}1,15,000.00{% elif selected_currency == 'USD' %}1,380.00{% elif selected_currency ==
+                                'EUR' %}1,265.00{% else %}1,092.50{% endif %}</span>
                         </div>
                     </div>
                 </div>

@@ -33,7 +33,8 @@ def detect_damage(image_path):
         # Upload image to Gemini
         uploaded_file = client.files.upload(file=image_path)
 
-        prompt = """You are an expert automotive damage assessor. Analyze this vehicle image and provide a detailed damage assessment.
+        prompt = """You are a highly detailed real-time automotive damage assessor.
+Analyze this vehicle image in detail to identify CURRENT damage.
 
 Return your analysis as a JSON object with this exact structure:
 {
@@ -46,15 +47,15 @@ Return your analysis as a JSON object with this exact structure:
             "damage_type": "scratch/dent/crack/shatter/deformation/paint_damage/structural",
             "severity": "minor/moderate/severe",
             "confidence": 0.0-1.0,
-            "description": "brief description of the damage"
+            "description": "brief evidence-based description of the damage"
         }
     ],
     "overall_severity": "minor/moderate/severe",
     "drivable": true/false,
-    "summary": "overall assessment summary"
+    "summary": "overall real-time assessment summary based on visual evidence"
 }
 
-If no vehicle is detected, set vehicle_detected to false and return empty damages array.
+IMPORTANT: Be extremely specific about damage locations and types.
 Only return the JSON, no other text."""
 
         response = client.models.generate_content(

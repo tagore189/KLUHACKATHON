@@ -6,7 +6,30 @@ document.addEventListener('DOMContentLoaded', () => {
     initNavbar();
     initRevealAnimations();
     initSmoothScroll();
+    initCurrencySelector();
 });
+
+/** Global Currency Selector */
+function initCurrencySelector() {
+    const selector = document.getElementById('currencySelect');
+    if (!selector) return;
+
+    selector.addEventListener('change', async (e) => {
+        const currency = e.target.value;
+        try {
+            const response = await fetch('/api/set_currency', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ currency })
+            });
+            if (response.ok) {
+                window.location.reload();
+            }
+        } catch (err) {
+            console.error('Failed to update currency:', err);
+        }
+    });
+}
 
 /** Navbar scroll effect & hamburger */
 function initNavbar() {

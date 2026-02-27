@@ -3,12 +3,12 @@
         "front_bumper": {
             "name": "Front Bumper",
             "repair_cost": {
-                "min": 150,
-                "max": 600
+                "min": 4500,
+                "max": 12000
             },
             "replacement_cost": {
-                "min": 500,
-                "max": 1500
+                "min": 15000,
+                "max": 45000
             },
             "labor_hours": {
                 "repair": 2,
@@ -18,12 +18,12 @@
         "rear_bumper": {
             "name": "Rear Bumper",
             "repair_cost": {
-                "min": 150,
-                "max": 600
+                "min": 4500,
+                "max": 12000
             },
             "replacement_cost": {
-                "min": 500,
-                "max": 1400
+                "min": 15000,
+                "max": 42000
             },
             "labor_hours": {
                 "repair": 2,
@@ -33,12 +33,12 @@
         "hood": {
             "name": "Hood",
             "repair_cost": {
-                "min": 200,
-                "max": 800
+                "min": 6000,
+                "max": 24000
             },
             "replacement_cost": {
-                "min": 700,
-                "max": 2500
+                "min": 21000,
+                "max": 75000
             },
             "labor_hours": {
                 "repair": 3,
@@ -48,12 +48,12 @@
         "trunk": {
             "name": "Trunk/Tailgate",
             "repair_cost": {
-                "min": 200,
-                "max": 700
+                "min": 6000,
+                "max": 21000
             },
             "replacement_cost": {
-                "min": 600,
-                "max": 2000
+                "min": 18000,
+                "max": 60000
             },
             "labor_hours": {
                 "repair": 2.5,
@@ -63,12 +63,12 @@
         "front_fender": {
             "name": "Front Fender",
             "repair_cost": {
-                "min": 200,
-                "max": 700
+                "min": 6000,
+                "max": 21000
             },
             "replacement_cost": {
-                "min": 500,
-                "max": 1800
+                "min": 15000,
+                "max": 54000
             },
             "labor_hours": {
                 "repair": 2.5,
@@ -78,12 +78,12 @@
         "rear_fender": {
             "name": "Rear Quarter Panel",
             "repair_cost": {
-                "min": 300,
-                "max": 1000
+                "min": 9000,
+                "max": 30000
             },
             "replacement_cost": {
-                "min": 800,
-                "max": 3000
+                "min": 24000,
+                "max": 90000
             },
             "labor_hours": {
                 "repair": 4,
@@ -93,12 +93,12 @@
         "door": {
             "name": "Door Panel",
             "repair_cost": {
-                "min": 200,
-                "max": 800
+                "min": 6000,
+                "max": 24000
             },
             "replacement_cost": {
-                "min": 600,
-                "max": 2500
+                "min": 18000,
+                "max": 75000
             },
             "labor_hours": {
                 "repair": 3,
@@ -108,12 +108,12 @@
         "headlight": {
             "name": "Headlight Assembly",
             "repair_cost": {
-                "min": 50,
-                "max": 200
+                "min": 1500,
+                "max": 6000
             },
             "replacement_cost": {
-                "min": 200,
-                "max": 1500
+                "min": 6000,
+                "max": 45000
             },
             "labor_hours": {
                 "repair": 0.5,
@@ -123,12 +123,12 @@
         "taillight": {
             "name": "Taillight Assembly",
             "repair_cost": {
-                "min": 50,
-                "max": 150
+                "min": 1500,
+                "max": 4500
             },
             "replacement_cost": {
-                "min": 150,
-                "max": 1000
+                "min": 4500,
+                "max": 30000
             },
             "labor_hours": {
                 "repair": 0.5,
@@ -138,12 +138,12 @@
         "windshield": {
             "name": "Windshield",
             "repair_cost": {
-                "min": 50,
-                "max": 150
+                "min": 1500,
+                "max": 4500
             },
             "replacement_cost": {
-                "min": 200,
-                "max": 1000
+                "min": 6000,
+                "max": 30000
             },
             "labor_hours": {
                 "repair": 1,
@@ -153,12 +153,12 @@
         "side_mirror": {
             "name": "Side Mirror",
             "repair_cost": {
-                "min": 50,
-                "max": 150
+                "min": 1500,
+                "max": 4500
             },
             "replacement_cost": {
-                "min": 150,
-                "max": 600
+                "min": 4500,
+                "max": 18000
             },
             "labor_hours": {
                 "repair": 0.5,
@@ -168,12 +168,12 @@
         "roof": {
             "name": "Roof Panel",
             "repair_cost": {
-                "min": 300,
-                "max": 1200
+                "min": 9000,
+                "max": 36000
             },
             "replacement_cost": {
-                "min": 1000,
-                "max": 4000
+                "min": 30000,
+                "max": 120000
             },
             "labor_hours": {
                 "repair": 5,
@@ -183,12 +183,12 @@
         "grille": {
             "name": "Front Grille",
             "repair_cost": {
-                "min": 50,
-                "max": 200
+                "min": 1500,
+                "max": 6000
             },
             "replacement_cost": {
-                "min": 100,
-                "max": 800
+                "min": 3000,
+                "max": 24000
             },
             "labor_hours": {
                 "repair": 0.5,
@@ -198,12 +198,12 @@
         "rocker_panel": {
             "name": "Rocker Panel",
             "repair_cost": {
-                "min": 200,
-                "max": 600
+                "min": 6000,
+                "max": 18000
             },
             "replacement_cost": {
-                "min": 500,
-                "max": 1500
+                "min": 15000,
+                "max": 45000
             },
             "labor_hours": {
                 "repair": 3,
@@ -213,12 +213,12 @@
         "wheel_rim": {
             "name": "Wheel/Rim",
             "repair_cost": {
-                "min": 75,
-                "max": 300
+                "min": 2250,
+                "max": 9000
             },
             "replacement_cost": {
-                "min": 200,
-                "max": 2000
+                "min": 6000,
+                "max": 60000
             },
             "labor_hours": {
                 "repair": 1,
@@ -226,15 +226,37 @@
             }
         }
     },
-    "labor_rate_per_hour": 75,
+    "labor_rate_per_hour": 1200,
     "paint_cost_per_panel": {
-        "min": 200,
-        "max": 500
+        "min": 3500,
+        "max": 8000
     },
     "severity_multipliers": {
         "minor": 0.3,
         "moderate": 0.6,
         "severe": 1.0
     },
-    "currency": "USD"
+    "currency": "INR",
+    "exchange_rates": {
+        "INR": {
+            "rate": 1.0,
+            "symbol": "₹",
+            "label": "INR (₹)"
+        },
+        "USD": {
+            "rate": 0.012,
+            "symbol": "$",
+            "label": "USD ($)"
+        },
+        "EUR": {
+            "rate": 0.011,
+            "symbol": "\u20ac",
+            "label": "EUR (\u20ac)"
+        },
+        "GBP": {
+            "rate": 0.0095,
+            "symbol": "\u00a3",
+            "label": "GBP (\u00a3)"
+        }
+    }
 }

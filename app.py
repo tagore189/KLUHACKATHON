@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from utils.preprocessing import allowed_file, preprocess_image, ensure_upload_dir, get_image_metadata
 from utils.detection import detect_damage, init_client
 from utils.severity import assess_severity
-from utils.cost_estimator import estimate_costs
+from utils.cost_estimator import estimate_costs, load_cost_data
 from utils.report_generator import generate_report
 from database.db import create_user, verify_user, get_db
 from pymongo import errors as mongo_errors
@@ -20,6 +20,33 @@ app.secret_key = os.environ.get('SECRET_KEY', 'visionclaim-dev-key-2024')
 
 # Initialize Gemini client
 init_client(os.environ.get('GOOGLE_API_KEY'))
+
+
+@app.context_processor
+def inject_currency():
+    """Injects currency information into all templates."""
+    cost_data = load_cost_data()
+    exchange_rates = cost_data.get('exchange_rates', {})
+    selected_currency = session.get('currency', 'INR')
+    
+    currency_info = exchange_rates.get(selected_currency, exchange_rates.get('INR'))
+    
+    return {
+        'selected_currency': selected_currency,
+        'currency_symbol': currency_info.get('symbol', '₹'),
+        'exchange_rates': exchange_rates
+    }
+
+
+@app.route('/api/set_currency', methods=['POST'])
+def set_currency():
+    """Sets the user's preferred currency."""
+    currency_code = request.json.get('currency')
+    cost_data = load_cost_data()
+    if currency_code in cost_data.get('exchange_rates', {}):
+        session['currency'] = currency_code
+        return jsonify({'success': True})
+    return jsonify({'success': False, 'error': 'Invalid currency'}), 400
 
 
 @app.route('/')
@@ -143,7 +170,8 @@ def analyze():
         # Estimate costs
         cost_estimate = estimate_costs(
             detection_result.get('damages', []),
-            severity_assessment
+            severity_assessment,
+            target_currency=session.get('currency', 'INR')
         )
 
         # Generate report
@@ -182,14 +210,22 @@ def demo_analysis():
         from utils.detection import simulate_damage_detection
         detection_result = simulate_damage_detection(None)
         severity_assessment = assess_severity(detection_result.get('damages', []))
-        cost_estimate = estimate_costs(detection_result.get('damages', []), severity_assessment)
+        cost_estimate = estimate_costs(
+            detection_result.get('damages', []), 
+            severity_assessment,
+            target_currency=session.get('currency', 'INR')
+        )
         report = generate_report(detection_result, severity_assessment, cost_estimate, image_filename='demo')
         report['image_url'] = '/static/demo_images/demo1.jpg'
         return jsonify(report)
 
     detection_result = detect_damage(filepath)
     severity_assessment = assess_severity(detection_result.get('damages', []))
-    cost_estimate = estimate_costs(detection_result.get('damages', []), severity_assessment)
+    cost_estimate = estimate_costs(
+        detection_result.get('damages', []), 
+        severity_assessment,
+        target_currency=session.get('currency', 'INR')
+    )
     report = generate_report(detection_result, severity_assessment, cost_estimate, image_filename=demo_image)
     report['image_url'] = f'/static/demo_images/{demo_image}'
     return jsonify(report)
