@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Log in to VisionClaim — AI-powered motor vehicle damage assessment.">
+    <title>Login | VisionClaim</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/auth.css">
+</head>
+
+<body class="auth-body">
+
+    <!-- Background particles -->
+    <div class="auth-bg">
+        <div class="auth-orb auth-orb-1"></div>
+        <div class="auth-orb auth-orb-2"></div>
+        <div class="auth-grid"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <svg class="logo-icon" viewBox="0 0 28 28" fill="none">
+                    <circle cx="14" cy="14" r="12" stroke="#3b82f6" stroke-width="2.5" />
+                    <circle cx="14" cy="14" r="5" fill="#3b82f6" />
+                    <path d="M14 2 L14 6 M14 22 L14 26 M2 14 L6 14 M22 14 L26 14" stroke="#3b82f6" stroke-width="2"
+                        stroke-linecap="round" />
+                </svg>
+                <span>VisionClaim</span>
+            </a>
+            <div class="nav-actions">
+                <span class="auth-nav-text">Don't have an account?</span>
+                <a href="/signup" class="btn btn-outline btn-sm">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Auth Container -->
+    <main class="auth-main">
+        <div class="auth-card">
+
+            <!-- Header -->
+            <div class="auth-header">
+                <div class="auth-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.5" width="28" height="28">
+                        <path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" />
+                        <path d="M3 16V8a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5Z" />
+                    </svg>
+                </div>
+                <h1 class="auth-title">Welcome back</h1>
+                <p class="auth-subtitle">Sign in to your VisionClaim account</p>
+            </div>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="auth-alert auth-alert-{{ category }}">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    {% if category == 'error' %}
+                    <path
+                        d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1m0 11a1 1 0 1 1 0-2 1 1 0 0 1 0 2m.93-5.588L8.7 10H7.3l-.23-3.588zM8 3.5a1.5 1.5 0 0 1 1.5 1.5A1.5 1.5 0 0 1 8 6.5" />
+                    {% else %}
+                    <path
+                        d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1m3.646 5.146a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 9.793l3.646-3.647a.5.5 0 0 1 .708 0" />
+                    {% endif %}
+                </svg>
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <!-- Form -->
+            <form class="auth-form" id="loginForm" method="POST" action="/login">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email address</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <path
+                                d="M2.5 6.5l7.5 5 7.5-5M3 4h14a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z" />
+                        </svg>
+                        <input type="email" id="email" name="email" class="form-input" placeholder="you@example.com"
+                            required autocomplete="email">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-label-row">
+                        <label class="form-label" for="password">Password</label>
+                        <a href="#" class="forgot-link">Forgot password?</a>
+                    </div>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <rect x="3" y="8" width="14" height="10" rx="2" />
+                            <path d="M7 8V6a3 3 0 0 1 6 0v2" />
+                        </svg>
+                        <input type="password" id="password" name="password" class="form-input" placeholder="••••••••"
+                            required autocomplete="current-password">
+                        <button type="button" class="toggle-password" id="togglePassword"
+                            aria-label="Toggle password visibility">
+                            <svg class="eye-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <path d="M10 4C5 4 1.73 7.11 1 10c.73 2.89 4 6 9 6s8.27-3.11 9-6c-.73-2.89-4-6-9-6Z" />
+                                <circle cx="10" cy="10" r="2.5" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="remember" name="remember" class="checkbox-input">
+                        <span class="checkbox-custom"></span>
+                        <span>Remember me for 30 days</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full auth-submit" id="loginBtn">
+                    <span class="btn-text">Sign In</span>
+                    <svg class="btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path
+                            d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
+                    </svg>
+                    <span class="btn-spinner" style="display:none;">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" class="spinning">
+                            <path
+                                d="M8 1.5a6.5 6.5 0 1 0 6.5 6.5.75.75 0 0 1 1.5 0A8 8 0 1 1 8 0a.75.75 0 0 1 0 1.5Z" />
+                        </svg>
+                    </span>
+                </button>
+            </form>
+
+            <!-- Divider -->
+            <div class="auth-divider">
+                <span>or continue with</span>
+            </div>
+
+            <!-- Social Buttons -->
+            <div class="social-buttons">
+                <button class="social-btn" id="googleLogin" type="button">
+                    <svg viewBox="0 0 24 24" width="18" height="18">
+                        <path fill="#4285F4"
+                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                        <path fill="#34A853"
+                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                        <path fill="#FBBC05"
+                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                        <path fill="#EA4335"
+                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                    </svg>
+                    Google
+                </button>
+                <button class="social-btn" id="githubLogin" type="button">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                        <path
+                            d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z" />
+                    </svg>
+                    GitHub
+                </button>
+            </div>
+
+            <!-- Footer link -->
+            <p class="auth-footer-link">
+                Don't have an account? <a href="/signup">Create one free →</a>
+            </p>
+        </div>
+    </main>
+
+    <script src="/static/js/auth.js"></script>
+</body>
+
+</html>

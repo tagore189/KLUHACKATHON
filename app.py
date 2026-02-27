@@ -1,7 +1,7 @@
 """Flask application for VisionClaim Motor Claim Estimator."""
 import os
 import uuid
-from flask import Flask, render_template, request, jsonify, send_from_directory
+from flask import Flask, render_template, request, jsonify, send_from_directory, redirect, url_for, flash, session
 from dotenv import load_dotenv
 
 from utils.preprocessing import allowed_file, preprocess_image, ensure_upload_dir, get_image_metadata
@@ -9,6 +9,8 @@ from utils.detection import detect_damage, init_client
 from utils.severity import assess_severity
 from utils.cost_estimator import estimate_costs
 from utils.report_generator import generate_report
+from database.db import create_user, verify_user, get_db
+from pymongo import errors as mongo_errors
 
 load_dotenv()
 
@@ -24,6 +26,74 @@ init_client(os.environ.get('GOOGLE_API_KEY'))
 def index():
     """Landing page."""
     return render_template('index.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    """Login page — authenticates against MongoDB."""
+    if session.get('user'):
+        return redirect(url_for('estimate'))
+
+    if request.method == 'POST':
+        email    = request.form.get('email', '').strip()
+        password = request.form.get('password', '')
+
+        if not email or not password:
+            flash('Please enter your email and password.', 'error')
+        else:
+            try:
+                user = verify_user(email, password)
+                if user:
+                    session['user'] = user
+                    flash(f'Welcome back, {user["first_name"]}! 👋', 'success')
+                    return redirect(url_for('estimate'))
+                else:
+                    flash('Invalid email or password. Please try again.', 'error')
+            except Exception as e:
+                flash('Could not connect to database. Please try again later.', 'error')
+
+    return render_template('login.html')
+
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    """Sign-up page — creates a new user in MongoDB."""
+    if session.get('user'):
+        return redirect(url_for('estimate'))
+
+    if request.method == 'POST':
+        first_name = request.form.get('first_name', '').strip()
+        last_name  = request.form.get('last_name', '').strip()
+        email      = request.form.get('email', '').strip()
+        password   = request.form.get('password', '')
+        confirm_pw = request.form.get('confirm_password', '')
+
+        if not first_name or not email or not password:
+            flash('Please fill in all required fields.', 'error')
+        elif password != confirm_pw:
+            flash('Passwords do not match. Please try again.', 'error')
+        elif len(password) < 8:
+            flash('Password must be at least 8 characters.', 'error')
+        else:
+            try:
+                user = create_user(first_name, last_name, email, password)
+                session['user'] = user
+                flash(f'Account created! Welcome to VisionClaim, {first_name} 🎉', 'success')
+                return redirect(url_for('estimate'))
+            except ValueError as e:
+                flash(str(e), 'error')
+            except Exception as e:
+                flash('Could not create account. Please try again later.', 'error')
+
+    return render_template('signup.html')
+
+
+@app.route('/logout')
+def logout():
+    """Log out and clear session."""
+    session.clear()
+    flash('You have been logged out.', 'success')
+    return redirect(url_for('index'))
 
 
 @app.route('/estimate')
