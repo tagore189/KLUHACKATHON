@@ -9,7 +9,7 @@ from utils.detection import detect_damage, init_client
 from utils.severity import assess_severity
 from utils.cost_estimator import estimate_costs, load_cost_data
 from utils.report_generator import generate_report
-from database.db import create_user, verify_user, get_db, save_scan, get_user_scans, get_scan
+from database.db import create_user, verify_user, get_db, save_scan, get_user_scans, get_scan, save_claim, get_scan_by_report_id
 from pymongo import errors as mongo_errors
 
 load_dotenv()
@@ -262,6 +262,37 @@ def uploaded_file(filename):
     """Serve uploaded files."""
     upload_dir = ensure_upload_dir()
     return send_from_directory(upload_dir, filename)
+
+
+@app.route('/claim/<report_id>')
+def claim_page(report_id):
+    """Render the insurance claim page."""
+    if 'user' not in session:
+        flash('Please log in to file a claim.', 'info')
+        return redirect(url_for('login', next=f'/claim/{report_id}'))
+    
+    scan_doc = get_scan_by_report_id(report_id, user_id=session['user']['id'])
+    if not scan_doc:
+        flash('Report not found or access denied.', 'error')
+        return redirect(url_for('dashboard'))
+    
+    return render_template('claim.html', scan=scan_doc['data'])
+
+
+@app.route('/api/submit_claim', methods=['POST'])
+def submit_claim():
+    """Handle insurance claim submission."""
+    if 'user' not in session:
+        return jsonify({'success': False, 'error': 'Authentication required'}), 401
+    
+    data = request.json
+    data['user_id'] = session['user']['id']
+    
+    try:
+        claim_id = save_claim(data)
+        return jsonify({'success': True, 'claim_id': claim_id})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 
 if __name__ == '__main__':

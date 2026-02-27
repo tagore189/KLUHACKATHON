@@ -1,5 +1,6 @@
 """MongoDB database connection and user management utilities."""
 import os
+import uuid
 import bcrypt
 from datetime import datetime, timezone
 from pymongo import MongoClient, errors
@@ -88,12 +89,20 @@ def verify_user(email: str, password: str) -> dict | None:
 def save_scan(user_id: str, scan_data: dict) -> str:
     """Save a scan report for a user."""
     db = get_db()
+    
+    # Use report_id from AI if available, else generate unique one
+    scan_id = scan_data.get('report_id') or f"SCAN-{uuid.uuid4().hex[:12].upper()}"
+    
+    # Correctly access damage_assessment from report
+    assessment = scan_data.get('damage_assessment', {})
+    overall_severity = assessment.get('overall_severity', 'minor').lower()
+    
     scan_doc = {
         'user_id': user_id,
-        'scan_id': scan_data.get('scan_id', f"SCAN-{datetime.now().strftime('%y%m%d%H%M%S')}"),
+        'scan_id': scan_id,
         'data': scan_data,
         'created_at': datetime.now(timezone.utc),
-        'status': 'Completed' if scan_data.get('severity_assessment', {}).get('overall') != 'severe' else 'Under Review'
+        'status': 'Under Review' if overall_severity == 'severe' else 'Completed'
     }
     result = db.scans.insert_one(scan_doc)
     return str(result.inserted_id)
@@ -113,6 +122,38 @@ def get_scan(scan_id: str, user_id: str = None):
     if user_id:
         query['user_id'] = user_id
     return db.scans.find_one(query)
+
+
+def get_scan_by_report_id(report_id: str, user_id: str = None):
+    """Retrieve a scan by its report_id."""
+    db = get_db()
+    query = {'data.report_id': report_id}
+    if user_id:
+        query['user_id'] = user_id
+    return db.scans.find_one(query)
+
+
+def save_claim(claim_data: dict) -> str:
+    """Save an official insurance claim."""
+    db = get_db()
+    claim_id = f"CLM-{datetime.now().strftime('%y%m%d%H%M%S')}"
+    claim_doc = {
+        'claim_id': claim_id,
+        'report_id': claim_data.get('report_id'),
+        'user_id': claim_data.get('user_id'),
+        'policy_number': claim_data.get('policy_number'),
+        'license_plate': claim_data.get('license_plate'),
+        'owner_name': claim_data.get('owner_name'),
+        'incident': {
+            'date': claim_data.get('incident_date'),
+            'location': claim_data.get('incident_location'),
+            'description': claim_data.get('incident_description')
+        },
+        'status': 'Submitted',
+        'submitted_at': datetime.now(timezone.utc)
+    }
+    result = db.claims.insert_one(claim_doc)
+    return claim_id
 
 
 def _safe(user: dict) -> dict:

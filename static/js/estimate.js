@@ -304,6 +304,16 @@ function initResultActions() {
         });
     }
 
+    const proceedBtn = document.getElementById('proceedClaimBtn');
+    if (proceedBtn) {
+        proceedBtn.addEventListener('click', () => {
+            const reportId = document.getElementById('reportId').textContent;
+            if (reportId) {
+                window.location.href = `/claim/${reportId}`;
+            }
+        });
+    }
+
     const newBtn = document.getElementById('newAnalysisBtn');
     if (newBtn) {
         newBtn.addEventListener('click', () => {

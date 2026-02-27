@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisionClaim | File Your Claim</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .claim-container {
+            max-width: 800px;
+            margin: 120px auto 60px;
+            padding: 0 20px;
+        }
+
+        .claim-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .form-group.full {
+            grid-column: span 2;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--blue-500);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .claim-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .claim-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .claim-header p {
+            color: var(--text-secondary);
+        }
+
+        .summary-box {
+            background: rgba(59, 130, 246, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .summary-box h4 {
+            color: var(--blue-400);
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .summary-content {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <svg class="logo-icon" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="14" cy="14" r="12" stroke="#3b82f6" stroke-width="2.5" />
+                    <circle cx="14" cy="14" r="5" fill="#3b82f6" />
+                    <path d="M14 2 L14 6 M14 22 L14 26 M2 14 L6 14 M22 14 L26 14" stroke="#3b82f6" stroke-width="2"
+                        stroke-linecap="round" />
+                </svg>
+                <span>VisionClaim</span>
+            </a>
+            <div class="nav-links">
+                <a href="/dashboard" class="nav-link">Dashboard</a>
+                <a href="/estimate" class="nav-link">New Scan</a>
+            </div>
+            <div class="nav-actions">
+                <a href="/logout" class="nav-link">Log out</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="claim-container">
+        <div class="claim-header reveal">
+            <h1>File Your <span class="gradient-text">Insurance Claim</span></h1>
+            <p>Complete the details below to submit your claim to the insurer.</p>
+        </div>
+
+        <div class="claim-card reveal delay-1">
+            <div class="summary-box">
+                <h4>Damage Analysis Summary</h4>
+                <div class="summary-content">
+                    <p><strong>Report ID:</strong> {{ scan.report_id }}</p>
+                    <p><strong>Vehicle:</strong> {{ scan.vehicle_info.color }} {{ scan.vehicle_info.type }}</p>
+                    <p><strong>Estimated Repair:</strong> {{ currency_symbol }}{{
+                        "{:,.2f}".format(scan.cost_estimate.total) }}</p>
+                </div>
+            </div>
+
+            <form id="claimForm">
+                <input type="hidden" name="report_id" value="{{ scan.report_id }}">
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="policyNumber">Insurance Policy Number</label>
+                        <input type="text" id="policyNumber" name="policy_number" placeholder="e.g. POL-12345678"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="licensePlate">Vehicle License Plate</label>
+                        <input type="text" id="licensePlate" name="license_plate" placeholder="e.g. ABC-1234" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ownerName">Full Name of Owner</label>
+                        <input type="text" id="ownerName" name="owner_name"
+                            value="{{ session.user.name if session.user else '' }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="incidentDate">Date of Incident</label>
+                        <input type="date" id="incidentDate" name="incident_date" required>
+                    </div>
+                    <div class="form-group full">
+                        <label for="incidentLocation">Incident Location</label>
+                        <input type="text" id="incidentLocation" name="incident_location" placeholder="City, State"
+                            required>
+                    </div>
+                    <div class="form-group full">
+                        <label for="incidentDescription">briefly describe what happened</label>
+                        <textarea id="incidentDescription" name="incident_description" rows="4"
+                            placeholder="Describe the circumstances of the damage..."></textarea>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px;">
+                    <button type="submit" class="btn btn-primary btn-full" id="submitClaimBtn">
+                        Submit Official Claim →
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+    <script>
+        document.getElementById('claimForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitClaimBtn');
+            btn.disabled = true;
+            btn.textContent = 'Submitting...';
+
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('/api/submit_claim', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Claim submitted successfully! Claim ID: ' + result.claim_id);
+                    window.location.href = '/dashboard';
+                } else {
+                    alert('Error: ' + result.error);
+                    btn.disabled = false;
+                    btn.textContent = 'Submit Official Claim →';
+                }
+            } catch (err) {
+                console.error(err);
+                alert('An unexpected error occurred.');
+                btn.disabled = false;
+                btn.textContent = 'Submit Official Claim →';
+            }
+        });
+
+        // Date picker default to today
+        document.getElementById('incidentDate').valueAsDate = new Date();
+    </script>
+</body>
+
+</html>

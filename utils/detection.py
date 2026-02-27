@@ -12,7 +12,8 @@ def init_client(api_key=None):
     global client
     key = api_key or os.environ.get('OPENAI_API_KEY', '')
     if key:
-        client = OpenAI(api_key=key)
+        # Strip whitespace/newlines that might come from .env parsing
+        client = OpenAI(api_key=key.strip())
     return client
 
 
